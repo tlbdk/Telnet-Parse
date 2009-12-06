@@ -1,0 +1,57 @@
+NAME
+    Telnet::Parse - A module to parse telnet data and options
+
+DESCRIPTION
+    This module makes it easy to work with telnet data and provides function
+    for doing option parsing, data encoding/decoding. Unlike Net::Telnet and
+    other modules like it, the actual handling of sockets is left to other
+    modules as this module only works with data.
+
+SYNOPSIS
+      use Telnet::Parse;
+      # FIXME: Make normal telnet socket and get sample working
+
+      my ($text, $left, @options);
+      while(1) {
+          my $data = $sock->read(1000);
+
+          telnet_parse($data);
+          ($newtext, $left, @newoptions) = parse($left.$data);
+          $text .= $newtext;
+
+          # Answer what options we like to use
+          my $buf = telnet_options(\@options, $newoptions);
+          $sock->send($buf) if $buf;
+
+          if($text =~ /login:/) {
+              $sock->send("myusername\r\n");
+      
+          } elsif($text =~ /Password:/) {
+              $sock->send("mypassword\r\n");
+          }
+      }
+  
+METHODS
+    telnet_parse($date)
+        # FIXME: Fill out
+
+    telnet_options
+        # FIXME: Fill out
+
+    telnet_decode($header, $str)
+        Function that decodes telnet date by converting line ending to local
+        form and removes all control/escape characters, like xterm color
+        codes, etc.
+
+    telnet_dump($header, $str)
+        Simple function used in debuging telnet data
+
+AUTHOR
+    Troels Liebe Bentsen <tlb@rapanden.dk>
+
+COPYRIGHT
+    Copyright(C) 2007 Troels Liebe Bentsen
+
+    This library is free software; you can redistribute it and/or modify it
+    under the same terms as Perl itself.
+
